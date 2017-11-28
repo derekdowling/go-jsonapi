@@ -160,7 +160,7 @@ func closeReader(reader io.ReadCloser) {
 func validateHeaders(headers http.Header) *Error {
 
 	reqContentType := headers.Get("Content-Type")
-	if reqContentType != ContentType {
+	if strings.Contains(reqContentType, ContentType) == false {
 		return SpecificationError(fmt.Sprintf(
 			"Expected Content-Type header to be %s, got: %s",
 			ContentType,
