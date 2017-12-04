@@ -129,3 +129,27 @@ func TestParsing(t *testing.T) {
 		})
 	})
 }
+
+func TestContentType(t *testing.T) {
+	Convey("Parse Tests", t, func() {
+		Convey("should contain json api content type", func() {
+			Convey("->validateHeaders()", func() {
+				// Set up request
+				req, reqErr := http.NewRequest("GET", "", nil)
+				So(reqErr, ShouldBeNil)
+				req.Header.Set("Content-Type", ContentType)
+
+				// Contains the default content type
+				err := validateHeaders(req.Header)
+				So(err, ShouldBeNil)
+				So(req.Header.Get("Content-Type"), ShouldContainSubstring, ContentType)
+
+				// Contains the default content type and charset
+				req.Header.Set("Content-Type", ContentType+"; charset=utf-8")
+				err = validateHeaders(req.Header)
+				So(err, ShouldBeNil)
+				So(req.Header.Get("Content-Type"), ShouldContainSubstring, ContentType)
+			})
+		})
+	})
+}
